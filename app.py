@@ -9,6 +9,10 @@ env = None
 class Action(BaseModel):
     action: int
 
+@app.get("/")
+def home():
+    return {"message": "Cloud OpenEnv is running "}
+
 @app.post("/reset")
 def reset():
     global env
