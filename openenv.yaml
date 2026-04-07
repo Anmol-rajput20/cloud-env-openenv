@@ -1,0 +1,18 @@
+id: cloud-resource-optimization
+name: Cloud Resource Optimization Env
+
+description: >
+  A real-world simulation environment where an AI agent learns to manage cloud
+  infrastructure by scaling servers based on incoming traffic while balancing cost and performance.
+
+entrypoint: env.py
+
+tasks:
+  - id: easy
+    description: Handle low traffic with minimal cost
+  - id: medium
+    description: Balance moderate traffic spikes efficiently
+  - id: hard
+    description: Handle unpredictable high traffic and failures
+
+inference: inference.py
