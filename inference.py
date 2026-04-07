@@ -56,7 +56,7 @@ def run_episode(difficulty):
     return score
 
 
-# 🔹 Run all tasks
+# Run all tasks
 if __name__ == "__main__":
     for level in ["easy", "medium", "hard"]:
         run_episode(level)
