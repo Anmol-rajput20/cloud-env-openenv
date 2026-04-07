@@ -1,13 +1,32 @@
 from fastapi import FastAPI
-import subprocess
+from pydantic import BaseModel
+from env import CloudEnv
 
 app = FastAPI()
 
-@app.get("/")
-def run_env():
-    result = subprocess.run( 
-        ["python", "inference.py"],
-        capture_output=True,
-        text=True
-    )
-    return {"output": result.stdout}
+env = None
+
+class Action(BaseModel):
+    action: int
+
+@app.post("/reset")
+def reset():
+    global env
+    env = CloudEnv("easy")  # default
+    state = env.reset()
+    return state.__dict__
+
+@app.post("/step")
+def step(action: Action):
+    global env
+    state, reward, done, _ = env.step(action.action)
+    return {
+        "state": state.__dict__,
+        "reward": reward,
+        "done": done
+    }
+
+@app.get("/state")
+def get_state():
+    global env
+    return env.state().__dict__
