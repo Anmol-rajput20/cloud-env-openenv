@@ -9,6 +9,11 @@ license: mit
 short_description: Openenv cloud resource optimization environment
 ---
 
+## 🔗 Live Demo
+
+Hugging Face Space:  
+https://huggingface.co/spaces/anmol1620/cloud-env-openenv
+
 # Cloud Resource Management Environment (OpenEnv)
 
 ## Overview
@@ -126,3 +131,4 @@ This demonstrates that the environment is **non-trivial and realistic**
 ```bash
 pip install -r requirements.txt
 python inference.py
+
