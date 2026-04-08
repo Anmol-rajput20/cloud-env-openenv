@@ -12,9 +12,21 @@ MODEL = os.environ.get("MODEL_NAME","gpt-4o-mini")
 
 random.seed(42)
 
+def fallback_policy(state):
+    if state.cpu > 75:
+        return 0  # add server
+    elif state.cpu < 40:
+        return 1  # remove server
+    else:
+        return 2  # do nothing
 
 def agent_policy(state):
-    prompt = f"""
+    try:
+        # If API not available → fallback
+        if "API_KEY" not in os.environ:
+            return fallback_policy(state)
+
+        prompt = f"""
 You are managing cloud servers.
 
 State:
@@ -30,16 +42,24 @@ Actions:
 Return only the number (0, 1, or 2).
 """
 
-    response = client.chat.completions.create(
-        model=MODEL,
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0
-    )
+        response = client.chat.completions.create(
+            model=MODEL,
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0
+        )
 
-    try:
-        return int(response.choices[0].message.content.strip()[0])
-    except:
-        return 2  # fallback
+        text = response.choices[0].message.content.strip()
+
+        
+        for char in text:
+            if char in ["0", "1", "2"]:
+                return int(char)
+
+        return fallback_policy(state)
+
+    except Exception:
+        return fallback_policy(state)
+
 
 
 def run_task(difficulty):
@@ -70,4 +90,7 @@ def run_task(difficulty):
 
 if __name__ == "__main__":
     for level in ["easy", "medium", "hard"]:
-        run_task(level)
+        try:
+            run_task(level)
+        except Exception:
+            print(f"[END] difficulty={level} total_reward=0 score=0.0")
