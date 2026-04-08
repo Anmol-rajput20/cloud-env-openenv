@@ -3,13 +3,12 @@ from openai import OpenAI
 import os
 import random
 
-# Setup client (MANDATORY)
 client = OpenAI(
-    base_url=os.environ["API_BASE_URL"],
-    api_key=os.environ["API_KEY"]
+    base_url=os.environ.get("API_BASE_URL", "https://api.openai.com/v1"),
+    api_key=os.environ.get("API_KEY", "dummy-key")
 )
 
-MODEL = os.environ["MODEL_NAME"]
+MODEL = os.environ.get("MODEL_NAME","gpt-4o-mini")
 
 random.seed(42)
 
