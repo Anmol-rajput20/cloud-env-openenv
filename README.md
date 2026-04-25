@@ -6,51 +6,49 @@ colorTo: indigo
 sdk: docker
 pinned: false
 license: mit
-short_description: Openenv cloud resource optimization environment
+short_description: OpenEnv cloud resource optimization environment
 ---
 
-## 🔗 Live Demo
+# 🚀 Adaptive Cloud Resource Optimization with LLMs
 
-Hugging Face Space:  
-https://huggingface.co/spaces/anmol1620/cloud-env-openenv
+## 🧠 The Problem
 
-# Cloud Resource Management Environment (OpenEnv)
+In modern cloud systems, failures don’t always look like crashes — they look like **imbalance**.
 
-## Overview
+- Scaling too late → system overload 🚨  
+- Scaling too early → unnecessary cost 💸  
 
-This project simulates a real-world cloud resource management system, where an AI agent dynamically scales server infrastructure based on incoming traffic.
+At scale, reacting after the spike is already too late.
 
-Inspired by real-world systems like Amazon Web Services, the environment models:
-
-- Dynamic traffic patterns  
-- Server failures  
-- Delayed scaling (realistic provisioning)  
-- Cost vs performance trade-offs  
+👉 The real challenge is not rules — it’s **decision-making under uncertainty**.
 
 ---
 
-##  Objective
+## 💡 Our Approach
 
-Design an agent that:
+We built an **OpenEnv environment** where an AI agent learns to:
 
-- Maintains optimal CPU utilization  
-- Minimizes infrastructure cost  
-- Adapts to unpredictable demand  
+- Dynamically scale servers  
+- Balance performance and cost  
+- Adapt to unpredictable traffic  
+
+Instead of predefined rules, the system **learns how to decide**.
 
 ---
 
-##  Environment Design
+## ⚙️ Environment Overview
 
-###  State (Observation Space)
+### 📊 State
 
-- `cpu` → current CPU utilization (%)  
-- `servers` → number of active servers  
+- `cpu` → current CPU utilization  
+- `servers` → active servers  
 - `requests` → incoming traffic  
 - `cost` → infrastructure cost  
+- `trend` → demand change  
 
 ---
 
-###  Actions (Action Space)
+### 🎮 Actions
 
 - `0` → Add server  
 - `1` → Remove server  
@@ -58,139 +56,127 @@ Design an agent that:
 
 ---
 
-## OpenEnv API
+## 🧪 Training Approach
 
-- `reset()` → initializes environment  
-- `step(action)` → returns (state, reward, done, info)  
-- `state()` → returns current state  
+We follow a **two-stage pipeline**:
 
----
+1. **Reinforcement Learning**  
+   → Validate that optimal behavior exists  
 
-## Reward Function
+2. **LLM Training (Unsloth)**  
+   → Generalize learned behavior  
 
-The reward is designed to reflect real-world trade-offs:
-
-- High reward for optimal CPU usage  
-- Penalty for overloading (CPU > 100%)  
-- Penalty for high infrastructure cost  
-- Penalty for unstable scaling  
-
-This provides **continuous learning signals**, not just final success/failure.
-
----
-
-## Tasks
-
-| Task | Description |
-|------|------------|
-| Easy | Stable and predictable traffic |
-| Medium | Moderate fluctuations |
-| Hard | High volatility + sudden spikes |
-
----
-
-## Grading System
-
-Each episode is evaluated using a normalized score:
-
-- `0.0` → poor performance  
-- `1.0` → optimal behavior  
-
----
-
-## Baseline Agents
-
-### Smart Agent
-Rule-based policy using:
-- CPU thresholds  
-- demand vs capacity  
-
-### Random Agent
-Random action selection
+👉 Bridging simulation → real-world decision systems
 
 ---
 
 ## 📊 Results
 
-### 🔹 Baseline (Reinforcement Learning)
+### 🔹 RL Validation
 
 | Agent        | Score |
 |-------------|------|
 | Random       | -10.96 |
 | Rule-Based   | 4.91 |
-| Trained RL   | 53.89 |
+| Trained RL   | **53.89** |
 
-👉 The RL agent improves significantly over rule-based strategies, showing the environment is learnable.
+👉 Confirms the environment is learnable.
 
 ---
 
-### 🔹 Final Model (LLM + Unsloth Training)
+### 🔹 LLM Performance
 
 | Agent        | Score |
 |-------------|------|
 | Random       | -5.90 |
 | Rule-Based   | -5.81 |
-| LLM (Trained) | **31.78** |
+| Trained LLM  | **31.78** |
 
-👉 The trained LLM agent significantly outperforms both baselines, demonstrating strong learning and decision-making ability.
+👉 The trained LLM significantly outperforms baseline approaches.
 
 ---
 
-### 🚀 Key Insight
+## 📈 Training Evidence
 
-The RL agent proves the environment is learnable, while the LLM agent demonstrates that this behavior can be generalized through language model training.
-
-
-### 📈 Training Reward Curve
-
+### 📉 Reward Curve
 ![Reward Curve](reward_curve.png)
 
-### 📈 Training Evidence
+---
 
-#### Loss Curve
-
+### 📉 Loss Curve
 ![Loss Curve](loss_curve.png)
 
-The loss curve shows how the model improved during training.
+👉 The decreasing loss confirms effective learning.
 
 ---
 
-#### Performance Comparison
+### 📊 Agent Comparison
+![Comparison](agent_comparison.png)
 
-![Comparison](comparison.png)
-
-The comparison graph shows that the trained LLM agent performs better than both the random and rule-based agents.
-
-## Observations
-
-- Easy → both agents perform similarly  
-- Medium → stochastic behavior affects outcomes  
-- Hard → smart agent performs better  
-
-This demonstrates that the environment is **non-trivial and realistic**
+👉 Clear separation between trained and baseline agents.
 
 ---
 
-## 💡 Key Insight
+## 🌍 Why This Matters
 
-The RL-trained agent learns to dynamically balance:
-- Performance (CPU utilization)
-- Cost (number of servers)
-- Stability (smooth scaling)
+This environment captures **real-world cloud challenges**:
 
-Unlike static rule-based systems, it adapts to changing demand and achieves significantly higher rewards.
+- Dynamic traffic  
+- Cost-performance trade-offs  
+- Uncertainty-driven decisions  
+
+👉 Applicable to:
+- Cloud infrastructure  
+- Autonomous systems  
+- Resource optimization  
+
 ---
 
-## 🔗 Important Links
+## 🧪 Tasks
 
-- 🌐 Hugging Face Space: https://huggingface.co/spaces/anmol1620/cloud-env-openenv
-- 📓 Colab Notebook: [https://colab.research.google.com/drive/178-PtPKIpCd6f5Lv-alJCz8Vom6gI_JV?usp=sharing]
-- 🎥 Demo Video / Blog: [Add Link]
-- 💻 GitHub Repo: https://github.com/Anmol-rajput20/cloud-env-openenv
+| Task | Description |
+|------|------------|
+| Easy | Stable traffic |
+| Medium | Moderate fluctuations |
+| Hard | High volatility + failures |
 
-## Setup
+---
+
+## 🔍 Key Insight
+
+> Instead of writing rules, we let the system learn how to decide.
+
+---
+
+## 🔗 Try It Yourself
+
+🌐 Hugging Face Space:  
+https://huggingface.co/spaces/anmol1620/cloud-env-openenv  
+
+---
+
+## 📓 Training Notebook
+
+👉 End-to-end training (Unsloth + evaluation):  
+https://colab.research.google.com/drive/1-SYD12PALg4Mc5BgpC3azFRnjEiSnewm?usp=sharing  
+
+---
+
+## 🎥 Project Walkthrough
+
+👉 Watch full explanation and demo:  
+YOUR_YOUTUBE_VIDEO_LINK_HERE
+
+---
+
+## 💻 GitHub
+
+https://github.com/Anmol-rajput20/cloud-env-openenv  
+
+---
+
+## ⚙️ Setup
 
 ```bash
 pip install -r requirements.txt
 python inference.py
-
