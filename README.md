@@ -116,9 +116,9 @@ Random action selection
 
 | Agent        | Score |
 |-------------|------|
-| Random       | -4.46 |
-| Rule-Based   | 3.98 |
-| Trained RL   | 71.42 |
+| Random       | -10.96 |
+| Rule-Based   | 4.91 |
+| Trained RL   | 53.89 |
 
 👉 The trained RL agent significantly outperforms both random and rule-based agents, demonstrating successful learning and adaptation.
 
@@ -149,7 +149,7 @@ Unlike static rule-based systems, it adapts to changing demand and achieves sign
 ## 🔗 Important Links
 
 - 🌐 Hugging Face Space: https://huggingface.co/spaces/anmol1620/cloud-env-openenv
-- 📓 Colab Notebook: [Add Link]
+- 📓 Colab Notebook: [https://colab.research.google.com/drive/178-PtPKIpCd6f5Lv-alJCz8Vom6gI_JV?usp=sharing]
 - 🎥 Demo Video / Blog: [Add Link]
 - 💻 GitHub Repo: https://github.com/Anmol-rajput20/cloud-env-openenv
 

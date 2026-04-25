@@ -20,40 +20,41 @@ class CloudEnv:
         self.servers = 3
         self.time = 0
 
-        self.requests = random.randint(80,120)
-        self.prev_requests = self.requests
+        self.requests = 100
+        self.trend = 0
+        self.prev_requests = 100
 
         self._generate_requests()
         return self._get_state()
     
     def _generate_requests(self):
-        trend = random.randint(-20,20)
+        prev_requests = self.requests
+
 
         if self.difficulty == "easy":
-            self.requests = max(10,self.requests + trend)
+            self.requests = max(10,self.requests + random.randint(-20,20))
         elif self.difficulty == "medium":
-            self.requests = max(10, self.requests + trend + random.randint(-30,30))
+            self.requests = max(10, self.requests + random.randint(-50,50))
         else:
             #Hard -> spikes
             if random.random() < 0.2:
                 self.requests += random.randint(150,300)
             else:
-                self.requests = max(10, self.requests + trend + random.randint(-50,50))
+                self.requests = max(10, self.requests + random.randint(-70,70))
+
+        self.trend = self.requests - prev_requests
 
     def _get_state(self):
         cpu = (self.requests / (self.servers*50)) * 100
         cpu = min(cpu,150)
         cost = self.servers * 10
 
-        trend = self.requests - self.prev_requests
-
-
         return State(
             cpu = cpu,
             servers = self.servers,
             requests = self.requests,
             cost = cost,
-            trend = trend
+            trend = self.trend
         )
     
     def step(self,action):
@@ -76,7 +77,6 @@ class CloudEnv:
         if random.random() < 0.05:  # 5% chance
             self.servers = max(1, self.servers - 1)
 
-        self.prev_requests = self.requests
         self._generate_requests()
 
         state = self._get_state()
@@ -87,24 +87,40 @@ class CloudEnv:
 
         if 50 <= state.cpu <= 75:
             reward += 3.5
-        elif state.cpu <= 90:
-            reward -= 2
         elif state.cpu < 30:
+            reward -= 1.5
+        elif 75 < state.cpu <= 90:
             reward -= 0.5
             
 
         reward -= state.servers * 0.03
-        reward -= abs(state.cpu - prev_cpu) * 0.01
+        
+        if abs(state.cpu - prev_cpu) > 20:
+            reward -= 0.2
+
 
         if abs(state.cpu - prev_cpu) < 10:
-            reward += 0.03 
+            reward += 0.3 
 
         if state.cpu > 100:
-            reward -= 2
+            reward -= (state.cpu - 100) * 0.08
        
 
         if action in [0,1]:
             reward -= 0.05
+
+        if state.trend > 20 and action == 0:
+            reward += 0.8
+
+        if state.trend < -20 and action == 1:
+            reward += 0.8
+
+        if state.trend > 40 and action == 0:
+            reward += 0.8
+
+        if state.trend > 40 and action != 0:
+            reward -= 1.0
+
 
         done = self.time >= self.max_steps or state.cpu > 130
 
