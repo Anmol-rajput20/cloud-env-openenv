@@ -1,21 +1,13 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from env import CloudEnv
-import threading
-import os
+
 
 app = FastAPI()
 
 env = None
 
-# --------- TRAINING THREAD ---------
-def train():
-    print("🚀 Starting training...")
-    os.system("python train.py")
-    print("✅ Training completed!")
 
-# Start training in background
-threading.Thread(target=train).start()
 
 
 # --------- API ---------
