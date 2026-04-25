@@ -112,7 +112,7 @@ Random action selection
 
 ## 📊 Results
 
-### Agent Performance Comparison
+### 🔹 Baseline (Reinforcement Learning)
 
 | Agent        | Score |
 |-------------|------|
@@ -120,11 +120,46 @@ Random action selection
 | Rule-Based   | 4.91 |
 | Trained RL   | 53.89 |
 
-👉 The trained RL agent significantly outperforms both random and rule-based agents, demonstrating successful learning and adaptation.
+👉 The RL agent improves significantly over rule-based strategies, showing the environment is learnable.
+
+---
+
+### 🔹 Final Model (LLM + Unsloth Training)
+
+| Agent        | Score |
+|-------------|------|
+| Random       | -5.90 |
+| Rule-Based   | -5.81 |
+| LLM (Trained) | **31.78** |
+
+👉 The trained LLM agent significantly outperforms both baselines, demonstrating strong learning and decision-making ability.
+
+---
+
+### 🚀 Key Insight
+
+The RL agent proves the environment is learnable, while the LLM agent demonstrates that this behavior can be generalized through language model training.
+
 
 ### 📈 Training Reward Curve
 
 ![Reward Curve](reward_curve.png)
+
+### 📈 Training Evidence
+
+#### Loss Curve
+
+![Loss Curve](loss_curve.png)
+
+The loss curve shows how the model improved during training.
+
+---
+
+#### Performance Comparison
+
+![Comparison](comparison.png)
+
+The comparison graph shows that the trained LLM agent performs better than both the random and rule-based agents.
 
 ## Observations
 
