@@ -110,6 +110,22 @@ Random action selection
 
 ---
 
+## 📊 Results
+
+### Agent Performance Comparison
+
+| Agent        | Score |
+|-------------|------|
+| Random       | -4.46 |
+| Rule-Based   | 3.98 |
+| Trained RL   | 71.42 |
+
+👉 The trained RL agent significantly outperforms both random and rule-based agents, demonstrating successful learning and adaptation.
+
+### 📈 Training Reward Curve
+
+![Reward Curve](reward_curve.png)
+
 ## Observations
 
 - Easy → both agents perform similarly  
@@ -120,11 +136,22 @@ This demonstrates that the environment is **non-trivial and realistic**
 
 ---
 
-##  Key Insight
+## 💡 Key Insight
 
-> The goal is not to hardcode intelligence, but to create an environment where intelligent behavior can emerge and be evaluated.
+The RL-trained agent learns to dynamically balance:
+- Performance (CPU utilization)
+- Cost (number of servers)
+- Stability (smooth scaling)
 
+Unlike static rule-based systems, it adapts to changing demand and achieves significantly higher rewards.
 ---
+
+## 🔗 Important Links
+
+- 🌐 Hugging Face Space: https://huggingface.co/spaces/anmol1620/cloud-env-openenv
+- 📓 Colab Notebook: [Add Link]
+- 🎥 Demo Video / Blog: [Add Link]
+- 💻 GitHub Repo: https://github.com/Anmol-rajput20/cloud-env-openenv
 
 ## Setup
 

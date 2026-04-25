@@ -107,3 +107,10 @@ def plot_rewards(rewards):
 if __name__ == "__main__":
     rewards = train(episodes=200)
     plot_rewards(rewards)
+
+import pickle
+
+with open("q_table.pkl","wb") as f:
+    pickle.dump(Q,f)
+
+print("Q-table saved!")
