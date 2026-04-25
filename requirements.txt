@@ -3,10 +3,4 @@ fastapi
 uvicorn
 openai
 
-unsloth
-transformers
-datasets
-accelerate
-trl
-torch
 matplotlib
