@@ -12,6 +12,10 @@ class State(BaseModel):
     trend: float
 
 class CloudEnv:
+    """
+    OpenEnv compatible environment for cloud resource management
+    """
+    
     def __init__(self, difficulty="easy"):
         self.difficulty = difficulty
         self.max_steps = 50
