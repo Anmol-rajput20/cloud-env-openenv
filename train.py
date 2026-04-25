@@ -1,116 +1,85 @@
-import random
-import matplotlib.pyplot as plt
 from env import CloudEnv
+from agent import get_action
+from datasets import Dataset
+from unsloth import FastLanguageModel
+from transformers import TrainingArguments
+from trl import SFTTrainer
+import matplotlib.pyplot as plt
 
-# ---------------------------
-# Simple Q-learning setup
-# ---------------------------
+# --------- DATA GENERATION ---------
+data = []
 
-ACTIONS = [0, 1, 2]
+for difficulty in ["easy", "medium", "hard"]:
+    env = CloudEnv(difficulty)
 
-# Discretize CPU for table
-def discretize_cpu(cpu):
-    return int(cpu // 10)  # bucket (0–15)
-
-
-# Q-table: (cpu_bucket, servers) -> action values
-Q = {}
-
-def get_q(state):
-    key = (discretize_cpu(state.cpu), state.servers)
-    if key not in Q:
-        Q[key] = [0.0, 0.0, 0.0]
-    return Q[key]
-
-
-# Epsilon-greedy policy
-def choose_action(state, epsilon=0.2):
-    if random.random() < epsilon:
-        return random.choice(ACTIONS)
-    q_values = get_q(state)
-    return q_values.index(max(q_values))
-
-
-# ---------------------------
-# Training Loop
-# ---------------------------
-
-def train(episodes=200):
-
-    env = CloudEnv("medium")
-
-    alpha = 0.1   # learning rate
-    gamma = 0.9   # discount
-    epsilon = 0.3
-
-    rewards_per_episode = []
-
-    for ep in range(episodes):
-
+    for episode in range(200):
         state = env.reset()
-        total_reward = 0
 
         while True:
-            action = choose_action(state, epsilon)
+            action = get_action(state)
 
-            next_state, reward, done, _ = env.step(action)
+            data.append({
+                "input": f"cpu={state.cpu}, servers={state.servers}, requests={state.requests}, trend={state.trend}",
+                "output": str(action)
+            })
 
-            # Q-learning update
-            q_values = get_q(state)
-            next_q = get_q(next_state)
-
-            q_values[action] = q_values[action] + alpha * (
-                reward + gamma * max(next_q) - q_values[action]
-            )
-
-            state = next_state
-            total_reward += reward
+            state, reward, done, _ = env.step(action)
 
             if done:
                 break
 
-        rewards_per_episode.append(total_reward)
+print("Samples:", len(data))
 
-        # Decay epsilon
-        epsilon = max(0.05, epsilon * 0.995)
+dataset = Dataset.from_list(data)
 
-        if (ep + 1) % 20 == 0:
-            print(f"Episode {ep+1} | Reward: {total_reward:.2f}")
+def format_prompt(example):
+    return {
+        "text": f"State: {example['input']}\nAction: {example['output']}"
+    }
 
-    return rewards_per_episode
+dataset = dataset.map(format_prompt)
 
+# --------- MODEL ---------
+model, tokenizer = FastLanguageModel.from_pretrained(
+    model_name="unsloth/mistral-7b-bnb-4bit",
+    max_seq_length=2048,
+    load_in_4bit=True,
+)
 
-# ---------------------------
-# Plot + Save
-# ---------------------------
+model = FastLanguageModel.get_peft_model(
+    model,
+    r=16,
+    target_modules=["q_proj","k_proj","v_proj","o_proj"],
+    lora_alpha=16,
+    lora_dropout=0,
+    bias="none",
+    use_gradient_checkpointing=True,
+)
 
-def plot_rewards(rewards):
-    import numpy as np
+# --------- TRAINING ---------
+trainer = SFTTrainer(
+    model=model,
+    tokenizer=tokenizer,
+    train_dataset=dataset,
+    dataset_text_field="text",
+    max_seq_length=2048,
+    args=TrainingArguments(
+        per_device_train_batch_size=4,
+        gradient_accumulation_steps=2,
+        num_train_epochs=3,
+        learning_rate=1e-4,
+        logging_steps=20,
+        output_dir="final_outputs",
+    ),
+)
 
-    plt.figure()
+trainer.train()
 
-    window = 10
-    smoothed = np.convolve(rewards, np.ones(window)/window, mode='valid')
-    plt.plot(smoothed)
-    plt.xlabel("Episode")
-    plt.ylabel("Reward (smoothed)")
-    plt.title("Training Reward Curve")
+# --------- SAVE LOSS CURVE ---------
+losses = [log["loss"] for log in trainer.state.log_history if "loss" in log]
 
-    plt.savefig("reward_curve.png")
-    plt.show()
-
-
-# ---------------------------
-# Run
-# ---------------------------
-
-if __name__ == "__main__":
-    rewards = train(episodes=200)
-    plot_rewards(rewards)
-
-import pickle
-
-with open("q_table.pkl","wb") as f:
-    pickle.dump(Q,f)
-
-print("Q-table saved!")
+plt.plot(losses)
+plt.title("Final Training Loss")
+plt.xlabel("Steps")
+plt.ylabel("Loss")
+plt.savefig("final_loss.png")
