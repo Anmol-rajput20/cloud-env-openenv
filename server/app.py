@@ -1,11 +1,24 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from env import CloudEnv
+import threading
+import os
 
 app = FastAPI()
 
 env = None
 
+# --------- TRAINING THREAD ---------
+def train():
+    print("🚀 Starting training...")
+    os.system("python train.py")
+    print("✅ Training completed!")
+
+# Start training in background
+threading.Thread(target=train).start()
+
+
+# --------- API ---------
 class Action(BaseModel):
     action: int
 
@@ -16,7 +29,7 @@ def home():
 @app.post("/reset")
 def reset():
     global env
-    env = CloudEnv("easy")  # default
+    env = CloudEnv("easy")
     state = env.reset()
     return state.__dict__
 
@@ -35,9 +48,10 @@ def get_state():
     global env
     return env.state().__dict__
 
+
 def main():
     import uvicorn
-    uvicorn.run("server.app:app", host="0.0.0.0", port=7860)
+    uvicorn.run("app:app", host="0.0.0.0", port=7860)
 
 
 if __name__ == "__main__":
