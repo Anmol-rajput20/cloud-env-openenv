@@ -218,7 +218,7 @@ https://colab.research.google.com/drive/11eimb9uwdckClBZ1kW_cHlz3Vygxl1r8?usp=sh
 ## 🎥 Project Walkthrough
 
 👉 Watch full explanation and demo:  
-YOUR_YOUTUBE_VIDEO_LINK_HERE
+https://youtu.be/cJ5zpL9HtNg
 
 ---
 
