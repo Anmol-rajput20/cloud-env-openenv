@@ -11,6 +11,17 @@ short_description: OpenEnv cloud resource optimization environment
 
 # 🚀 Adaptive Cloud Resource Optimization with LLMs
 
+> An OpenEnv-based simulation where an AI agent learns to dynamically scale cloud infrastructure under uncertainty.
+
+---
+
+## ⚡ TL;DR
+
+We built a cloud resource optimization environment where an agent learns to dynamically scale infrastructure under unpredictable demand.  
+A trained LLM significantly outperforms rule-based approaches, demonstrating adaptive decision-making in a realistic system.
+
+---
+
 ## 🧠 The Problem
 
 In modern cloud systems, failures don’t always look like crashes — they look like **imbalance**.
@@ -62,7 +73,9 @@ We simulate a dynamic cloud system where the agent must:
 
 👉 Overall, this environment focuses on **learning adaptive decision-making in a realistic, partially dynamic system**.
 
-## ⚙️ Environment Overview
+---
+
+## ⚙️ Environment Design
 
 ### 📊 State
 
@@ -118,7 +131,9 @@ We follow a **two-stage pipeline**:
 | Rule-Based   | -5.81 |
 | Trained LLM  | **31.78** |
 
-👉 The trained LLM significantly outperforms baseline approaches.
+👉 The trained LLM significantly outperforms both random and rule-based baselines.
+
+👉 The trained LLM achieves a **~6x improvement over baseline agents**, clearly demonstrating learned behavior.
 
 ---
 
