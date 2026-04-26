@@ -199,7 +199,7 @@ https://huggingface.co/spaces/anmol1620/cloud-env-openenv
 ## 📓 Training Notebook
 
 👉 End-to-end training (Unsloth + evaluation):  
-https://colab.research.google.com/drive/1-SYD12PALg4Mc5BgpC3azFRnjEiSnewm?usp=sharing  
+https://colab.research.google.com/drive/11eimb9uwdckClBZ1kW_cHlz3Vygxl1r8?usp=sharing
 
 ---
 
