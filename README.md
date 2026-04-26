@@ -119,6 +119,8 @@ The training pipeline is included in this repository.
 
 The dataset is generated from environment trajectories, not loaded from a static external file.
 
+Training logs were captured during fine-tuning and used to generate loss curves included in this README.
+
 ## 📊 Results
 
 ### 🔹 RL Validation
