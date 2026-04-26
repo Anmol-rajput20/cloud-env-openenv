@@ -36,6 +36,32 @@ Instead of predefined rules, the system **learns how to decide**.
 
 ---
 
+## 🧩 OpenEnv Theme Alignment
+
+This project primarily aligns with:
+
+### 🟣 Theme #3 — World Modeling (Professional Tasks)
+
+We simulate a dynamic cloud system where the agent must:
+
+- Continuously observe changing system states  
+- Adapt to unpredictable traffic patterns  
+- Balance cost, performance, and stability  
+
+👉 The agent learns to **interact with a realistic environment**, update its internal understanding, and make decisions based on evolving conditions.
+
+---
+
+### 🟡 Secondary: Theme #2 — Long-Horizon Planning (Partial)
+
+- Decisions impact future system behavior  
+- Scaling actions influence upcoming resource utilization  
+- The agent learns to act with future consequences in mind  
+
+---
+
+👉 Overall, this environment focuses on **learning adaptive decision-making in a realistic, partially dynamic system**.
+
 ## ⚙️ Environment Overview
 
 ### 📊 State
