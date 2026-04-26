@@ -109,6 +109,16 @@ We follow a **two-stage pipeline**:
 
 ---
 
+## 🧪 Training Files
+
+The training pipeline is included in this repository.
+
+- `train.py` dynamically generates training data by interacting with the OpenEnv cloud simulation.
+- The full Unsloth fine-tuning workflow is also available in the Colab notebook.
+- Training plots and final inference results are included in this README.
+
+The dataset is generated from environment trajectories, not loaded from a static external file.
+
 ## 📊 Results
 
 ### 🔹 RL Validation
